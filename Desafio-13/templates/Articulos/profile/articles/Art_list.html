@@ -1,0 +1,30 @@
+{% comment %} {% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Listado de Artículos</h1>
+
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <!-- Agrega más detalles o campos del artículo aquí, si es necesario -->
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %} {% endcomment %}
+
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h1>Listado de Artículos</h1>
+  <ul>
+    {% for article in articles %}
+      <li>
+        <h2><a href="{% url 'blog:detail' article.pk %}">{{ article.title }}</a></h2>
+        <p>{{ article.content }}</p>
+        <!-- Agrega más detalles o campos del artículo aquí, si es necesario -->
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

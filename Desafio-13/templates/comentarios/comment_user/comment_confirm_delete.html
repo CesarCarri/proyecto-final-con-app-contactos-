@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h1>Eliminar comentario</h1>
+  <p>¿Estás seguro de que deseas eliminar este comentario?</p>
+  <form method="post">
+    {% csrf_token %}
+    <!-- Agregar el atributo "method" y "action" al formulario -->
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'articulos:detail_article' post_id=object.article.id %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% else %}
+  <p>Esta página solo está disponible para usuarios autenticados. Por favor, <a href="{% url 'usuarios:login_user' %}">inicia sesión</a> o <a href="{% url 'usuarios:signup_user' %}">regístrate</a>.</p>
+{% endif %}
+{% endblock %}
+

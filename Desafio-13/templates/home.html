@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row my-4 text-center">
+    <h3>Red Salud Popular Carrillo</h3>
+    <p>🌱"NO'OXONEC Algodón de Frontera'Campaña QARTAGO´Q</p>
+
+    {% for article in articles %}
+    <div class="col-md-4 p-4">
+        <div class="card bg-dark text-white card-project">
+            <img src="{{article.image.url }}" class="card-img-top" />
+
+            <div class="card-body">
+                <h2>{{ article.title }}</h2>
+                <p>Author: {{ article.author.username }}</p> <a href="{% url 'usuarios:author_detail' article.author.id %}">{{ article.author.username }}</a>
+                <p>{{ article.content|striptags |truncatechars:100 }}</p>
+
+                {% if user.is_authenticated %}
+                <!-- Mostrar enlaces para usuarios autenticados -->
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <a href="{% url 'articulos:detail_article' article.id %}" class="btn btn-success">Seguir Leyendo</a>
+                    {% if user.is_colaborador %}
+                    <a href="{% url 'articulos:update_article' article.id %}" class="btn btn-warning ms-2">Editar</a>
+                    <a href="{% url 'articulos:delete_article' article.id %}" class="btn btn-danger ms-2">Eliminar</a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <!-- Mostrar enlace para usuarios no autenticados -->
+                <a href="{% url 'articulos:detail_article' article.id %}" class="btn btn-success">Seguir Leyendo</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

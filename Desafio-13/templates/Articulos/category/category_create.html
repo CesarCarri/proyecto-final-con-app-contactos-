@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_colaborador %}
+<div class="container">
+    <div class="text-center mt-4">
+        <h3>Crear Categoría</h3>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar Categoría</button>
+    </form>
+    {% else %}
+    <p>Esta página solo está disponible para colaboradores. Por favor, inicia sesión o regístrate como colaborador.</p>
+    <p><a href="{% url 'usuarios:login_user' %}">Iniciar sesión</a> | <a href="{% url 'usuarios:signup_user' %}">Registrarse</a></p>
+    {% endif %}
+    <hr>
+
+    <div class="text-center mt-4">
+        <h5>Todos las Categorias</h5>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <ol class="list-group list-group-numbered">
+                {% for category in categories_page %} 
+                <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ category.name }}</div>
+                        <ul>
+                            {% for article in category.articles_set.all %}
+                                <li>{{ article.title }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{ category.articles_set.count }}</span>
+                    <a href="{% url 'articulos:delete_category' category.id %}" class="btn btn-danger ms-2">Eliminar</a> 
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <!-- Mostrar enlaces de paginación -->
+    <div class="pagination-container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if categories_page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.previous_page_number }}">Anterior</a></li>
+                {% endif %}
+
+                {% if categories_page.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.next_page_number }}">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.paginator.num_pages }}">Última &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+
+

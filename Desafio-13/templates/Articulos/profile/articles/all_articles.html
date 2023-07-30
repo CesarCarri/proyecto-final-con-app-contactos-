@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<div class="text-center">
+    <h3 class="text-decoration-underline" class="font-monospace" >Listado de todos los Artículos</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for article in page %}
+        <div class="col">
+            <!-- Agregar un estilo de fondo a la tarjeta -->
+            <div class="card h-100 bg-secondary">
+                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="max-height: 150px; object-fit: cover;">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">{{ article.date_published|date:'M d Y' }}</h6>
+                    <h5 class="text-dark card-title">{{ article.title }}</h5>
+                    {% if user.is_authenticated %}
+                    <p>Author: {{ article.author.username }}</p>
+                    {% endif %}
+                    <h5 class="text-dark fs-6 card-title">{{ article.category }}</h5>
+                    <p class="text-dark card-text">{{ article.content|striptags|truncatechars:100 }}</p>
+                    {% if user.is_authenticated %}
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a href="{% url 'articulos:detail_article' article.id %}" class="btn btn-success">Seguir Leyendo</a>
+                            {% if user.is_colaborador %}
+                            <a href="{% url 'articulos:update_article' article.id %}" class="btn btn-warning ms-2">Editar</a>
+                            <a href="{% url 'articulos:delete_article' article.id %}" class="btn btn-danger ms-2">Eliminar</a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                            <a href="{% url 'articulos:detail_article' article.id %}" class="btn btn-success">Seguir Leyendo</a>
+                    {% endif %}    
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="container mt-4 articles-container">
+    <!-- Contenedor para los artículos -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for article in articles %}
+        <!-- Tarjeta de artículo -->
+        <div class="col">
+            <!-- Agregar un estilo de fondo a la tarjeta -->
+            <div class="card h-100 bg-dark">
+                <!-- Contenido de la tarjeta -->
+                <!-- ... (resto del contenido de la tarjeta) ... -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Mostrar enlaces de paginación -->
+    <div class="pagination-container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">Anterior</a></li>
+                {% endif %}
+
+                <li class="page-item disabled"><span class="page-link">Página {{ page.number }} de {{ page.paginator.num_pages }}.</span></li>
+
+                {% if page.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">Última &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+

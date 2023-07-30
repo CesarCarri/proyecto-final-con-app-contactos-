@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mt-4">
+        <h1>Todos las Categorias</h1>
+    </div>
+    <hr>
+    <div class="row justify-content-center"> 
+        <div class="col-md-8">
+            <ol class="list-group list-group-numbered">
+                {% for category in categories_page %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ category.name }}</div>
+                            {{ category.content }}
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">{{ category.count }}</span>
+                        <a href="{% url 'articulos:all_category_articles' category.id %}" class="btn btn-primary ms-2">Ver Todos</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <!-- Mostrar enlaces de paginación -->
+    <div class="pagination-container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if categories_page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.previous_page_number }}">Anterior</a></li>
+                {% endif %}
+
+                <li class="page-item disabled"><span class="page-link">Página {{ categories_page.number }} de {{ categories_page.paginator.num_pages }}.</span></li>
+
+                {% if categories_page.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.next_page_number }}">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ categories_page.paginator.num_pages }}">Última &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

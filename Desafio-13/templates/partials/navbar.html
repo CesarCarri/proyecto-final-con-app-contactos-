@@ -1,0 +1,53 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold fst-italic" href="/">PortalPost</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'articulos:all_articles'%}">Articulos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'articulos:all_category'%}">Categorías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active " href="{% url 'articulos:about'%}">Acerca de</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'articulos:contact'%}">Contacto</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    <!-- Menú desplegable "Mi Perfil" -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ user.image.url }}" alt="Mi Perfil" class="profile-image">
+                            Perfil
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="{% url 'usuarios:update_user' %}">Ver Perfil</a></li>
+                            {% if user.is_colaborador %}
+                            <li><a class="dropdown-item" href="{% url 'articulos:article_create' %}">Publicar Articulos</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'usuarios:confirm_logout_user' %}?next={{path}}">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'usuarios:login_user' %}" class="nav-link">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'usuarios:signup_user' %}" class="nav-link">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+  

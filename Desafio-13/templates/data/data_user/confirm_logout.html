@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            <h1>Cerrar sesión?</h1>
+        </div>
+        <div class="card-body">
+            <h2>Hay una sesión activa</h2>
+            <form action="{% url 'usuarios:logout_user' %}?next={{next}}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{next}}">
+                <p>¿Desea cerrar sesión?</p>
+                <button class="btn btn-danger" type="submit">Cerrar sesion</button>
+                <a class="btn btn-secondary" href="{{next}}">Cancerlar</a>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock  %}

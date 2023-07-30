@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main class="container">
+    <form action="" method="POST">
+        <h1 class="mt-5">Iniciar Sesión</h1>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{next}}">
+        {{form|crispy}}
+        <button class="btn btn-success" type="submit">Iniciar sesion</button>
+        <a href="{% url 'usuarios:signup_user' %}?next={{next}}">Crear nueva cuenta</a>
+        <a href="{% url 'usuarios:password_reset' %}">¿Olvidaste tu contraseña?</a>
+    </form>
+</main>
+{% endblock  %}

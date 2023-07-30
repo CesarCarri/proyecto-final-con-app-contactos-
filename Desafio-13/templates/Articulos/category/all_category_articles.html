@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mt-4">
+        <h1>Artículos relacionado con la categoría "{{ category.name }}"</h1>
+    </div>
+    <div class="row justify-content-center"> 
+        <div class="col-md-8">
+            {% if articles_page %}
+                <ol class="list-group list-group-numbered">
+                    {% for article in articles_page %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start mb-2">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ article.title }}</div>
+                            {{ article.content }}
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ article.date_published }}</span>
+
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a href="{% url 'articulos:detail_article' article.id %}" class="btn btn-success ms-3">Leer</a>
+                        </div>
+                    </li>
+                    
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p>No hay artículos en esta categoría.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Mostrar enlaces de paginación -->
+    <div class="pagination-container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if articles_page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ articles_page.previous_page_number }}">Anterior</a></li>
+                {% endif %}
+
+                {% if articles_page.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ articles_page.next_page_number }}">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ articles_page.paginator.num_pages }}">Última &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+
+

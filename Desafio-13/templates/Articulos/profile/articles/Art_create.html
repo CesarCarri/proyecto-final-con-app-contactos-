@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_colaborador %}
+    <h1>Crear Artículo</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Guardar Artículo</button>
+    </form>
+    <br>
+    <form method="get" action="{% url 'articulos:create_category' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success">Crear Categoría</button>
+    </form>
+  {% else %}
+    <p>Esta página solo está disponible para colaboradores. Por favor, inicia sesión o regístrate como colaborador.</p>
+    <p><a href="{% url 'usuarios:login_user' %}">Iniciar sesión</a> | <a href="{% url 'usuarios:signup_user' %}">Registrarse</a></p>
+{% endif %}
+{% endblock %}
+
+
+
+

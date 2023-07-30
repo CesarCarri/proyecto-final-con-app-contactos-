@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">¡Bien hecho!</h4>
+                <p>{{ message }}</p>
+                <hr>
+                <p class="mb-0">¡Excelente trabajo!</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<div class="container text-center mt-4">
+    <h1>{{ article.title }}</h1>
+    <h5 class="text-muted fs-6 card-title">{{ article.category }}</h5>
+    <h2 class="my-2 h5 text-muted">{{ article.date_published }}</h2>
+    <p>Author: <a href="{% url 'usuarios:author_detail' article.author.id %}">{{ article.author.username }}</a></p>
+    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid my-4 w-50">
+    <div class="my-4">
+        {{ article.content|safe }}
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="card bg-light p-4 mb-4">
+            <h3 class="mb-3">Deja un comentario:</h3>
+            <form method="post" class="form-inline justify-content-center">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary mx-2">Comentar</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="mb-4">Inicia sesión para dejar un comentario.</p>
+    {% endif %}
+
+    {% if comments %}
+    <div class="card bg-light p-4">
+        <h3 class="mb-3">Comentarios:</h3>
+        <ul class="list-unstyled">
+            {% for comment in comments %}
+            <li class="mb-3">
+                <img src="{{ comment.author.image.url }}" alt="{{ comment.author.username }}" class="rounded-circle" width="40" height="40">
+                <strong>{{ comment.author.username }}</strong> - {{ comment.created_at|date:"M d Y H:i" }}<br>
+                {{ comment.content }}
+    
+                {% if user.is_authenticated %}
+                    {% if user.is_colaborador or user == comment.author %}
+                        <!-- Mostrar el botón de editar solo para el autor del comentario -->
+                        {% if user == comment.author %}
+                            <a href="{% url 'comentarios:update_comment' comment.id %}" class="btn btn-warning">Editar</a>
+                        {% endif %}
+    
+                        <!-- Mostrar el botón de eliminar para el autor del comentario y colaboradores -->
+                        <a href="{% url 'comentarios:delete_comment' comment.id %}" class="btn btn-danger">Eliminar</a>
+                    {% endif %}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <p class="mb-4">No hay comentarios todavía.</p>
+    {% endif %}
+    
+
+
+{% endblock %}
+

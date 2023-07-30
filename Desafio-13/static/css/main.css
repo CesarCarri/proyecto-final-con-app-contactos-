@@ -1,0 +1,37 @@
+/* main.css */
+:root {
+  --primary: #041b33cc;
+}
+
+.color-body {
+  background-color: var(--primary);
+  color: rgb(15, 100, 65);
+}
+
+
+.card-project:hover {
+    border: 1px solid #1c78ad;
+    cursor: pointer;
+  }
+
+  /* Estilo para hacer la imagen de perfil circular */
+.profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+  /* Estilos para el contenedor principal */
+.articles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: space-between;
+}
+
+/* Estilos para el contenedor de la paginación */
+.pagination-container {
+  margin-top: 20px;
+}
