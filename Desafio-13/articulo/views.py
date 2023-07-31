@@ -273,4 +273,4 @@ class AllContactView(View):
         context = {
             
         }
-        return render(request, 'contact/contact.html', context)
+        return render(request, 'contacto/contacto.html', context)
